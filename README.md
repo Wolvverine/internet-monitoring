@@ -1,6 +1,6 @@
 # ARCHIVED - Internet Monitoring Docker Stack with Prometheus + Grafana
 
-> **ARCHIVED**: This repository has been archived. The contents have been merged into my [internet-pi](https://github.com/geerlingguy/internet-pi) repository.
+The contents have been merged with [internet-pi](https://github.com/geerlingguy/internet-pi) repository.
 
 Stand-up a Docker [Prometheus](http://prometheus.io/) stack containing Prometheus, Grafana with [blackbox-exporter](https://github.com/prometheus/blackbox_exporter), and [speedtest-exporter](https://github.com/MiguelNdeCarvalho/speedtest-exporter) to collect and graph home Internet reliability and throughput.
 
