@@ -26,24 +26,24 @@ scrape_configs:
   # if you also have the shelly plug enabled there. It will just error out
   # by default if you don't have a Shelly Plug on your network. Someday I'll
   # work on making this more configurable...
-  - job_name: 'shelly-plug'
-    metrics_path: /metrics
-    scrape_interval: 1m
-    static_configs:
-      - targets: ['172.17.0.1:9924']
+  # - job_name: 'shelly-plug'
+  #   metrics_path: /metrics
+  #   scrape_interval: 1m
+  #   static_configs:
+  #    - targets: ['172.17.0.1:9924']
 
   # This job config only works with my internet-pi configuration currently,
   # if you also have starlink enabled there. It will just error out by default
   # if you don't have Starlink. Someday I'll work on making this more
   # configurable...
-  - job_name: 'starlink'
-    metrics_path: /metrics
-    static_configs:
-      - targets: ['172.17.0.1:9817']
+  # - job_name: 'starlink'
+  #   metrics_path: /metrics
+  #   static_configs:
+  #    - targets: ['172.17.0.1:9817']
 
-  - job_name: 'ping'
+  - job_name: 'http'
     metrics_path: /probe
-    scrape_interval: 5s
+    scrape_interval: 60s
     params:
       module: [http_2xx]  # Look for a HTTP 200 response.
     file_sd_configs:
@@ -51,19 +51,49 @@ scrape_configs:
         - pinghosts.yaml
     relabel_configs:
       - source_labels: [__address__]
-        regex: '(.*);(.*);(.*);(.*)'  #first is the url, thus unique for instance
+        regex: '(http.*);(.*);(.*);(.*)'  #first is the url, thus unique for instance
         target_label: instance
         replacement: $1
       - source_labels: [__address__]
-        regex: '(.*);(.*);(.*);(.*)'  #second is humanname to use in charts
+        regex: '(http.*);(.*);(.*);(.*)'  #second is humanname to use in charts
         target_label: humanname
         replacement: $2
       - source_labels: [__address__]
-        regex: '(.*);(.*);(.*);(.*)'  #third state whether this is testing external or internal network
+        regex: '(http.*);(.*);(.*);(.*)'  #third state whether this is testing external or internal network
         target_label: routing
         replacement: $3
       - source_labels: [__address__]
-        regex: '(.*);(.*);(.*);(.*)'  #fourth is which switch/router the device is connected to.
+        regex: '(http.*);(.*);(.*);(.*)'  #fourth is which switch/router the device is connected to.
+        target_label: switching
+        replacement: $4
+      - source_labels: [instance]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: ping:9115  # The blackbox exporter's real hostname:port.
+
+  - job_name: 'ping'
+    metrics_path: /probe
+    scrape_interval: 60s
+    params:
+      module: [icmp]
+    file_sd_configs:
+      - files:
+        - pinghosts.yaml
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: 'ping:(.*);(.*);(.*);(.*)'  #first is the url, thus unique for instance
+        target_label: instance
+        replacement: $1
+      - source_labels: [__address__]
+        regex: 'ping:(.*);(.*);(.*);(.*)'  #second is humanname to use in charts
+        target_label: humanname
+        replacement: $2
+      - source_labels: [__address__]
+        regex: 'ping:(.*);(.*);(.*);(.*)'  #third state whether this is testing external or internal network
+        target_label: routing
+        replacement: $3
+      - source_labels: [__address__]
+        regex: 'ping:(.*);(.*);(.*);(.*)'  #fourth is which switch/router the device is connected to.
         target_label: switching
         replacement: $4
       - source_labels: [instance]
