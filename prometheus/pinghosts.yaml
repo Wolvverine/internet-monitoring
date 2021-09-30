@@ -5,4 +5,6 @@
     # - http://192.168.1.1;internetbox;local;internetbox
     # - http://192.168.1.42;blackdata;local;orbirouter-attic
     # - http://192.168.1.101;orbirouter;local;orbirouter
-
+    # - ping:192.168.1.1;internetbox-ping;local;internetbox
+    # - ping:192.168.1.42;blackdata-ping;local;orbirouter-attic
+    # - ping:192.168.1.101;orbirouter-ping;local;orbirouter
