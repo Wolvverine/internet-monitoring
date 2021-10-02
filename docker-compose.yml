@@ -21,7 +21,7 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
       - '--web.enable-admin-api'
-      - '--web.listen-address=:9097'
+      - '--web.listen-address=0.0.0.0:9097'
     ports:
       - 9097:9097
     links:
