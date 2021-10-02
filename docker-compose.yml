@@ -13,7 +13,7 @@ services:
     image: prom/prometheus
     restart: always
     volumes:
-      - ./prometheus/:/etc/prometheus/
+      - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -35,7 +35,7 @@ services:
     restart: always
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       - prometheus
     ports:
